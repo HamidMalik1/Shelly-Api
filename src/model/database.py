@@ -51,13 +51,12 @@ class Connection(object):
     '''
 
     def device_object(self, row):
-        x = {
+        return {
             'id': row['id'],
             'device_name': row['device_name'],
             'topic': row['topic'],
             'location': row['location']
         }
-        return x
 
     def create_device(self, device_name, topic, location):
         query = 'INSERT INTO device_info(device_name, topic, location) VALUES(?,?,?)'
