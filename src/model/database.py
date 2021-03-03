@@ -51,13 +51,13 @@ class Connection(object):
     '''
 
     def device_object(self, row):
-        json.dump({
+        x = {
             'id': row['id'],
             'device_name': row['device_name'],
             'topic': row['topic'],
             'location': row['location']
-        }, abc)
-        return abc
+        }
+        return x
 
     def create_device(self, device_name, topic, location):
         query = 'INSERT INTO device_info(device_name, topic, location) VALUES(?,?,?)'

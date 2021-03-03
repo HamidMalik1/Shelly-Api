@@ -1,9 +1,18 @@
-from flask import Flask, jsonify, Response
-from flask_cors import CORS
-import database
-import json
+'''
+Created on 02 March 2021
+Provides Web Api
+'''
 
-DB_PATH = 'mydb.db'
+import os
+import json
+import datetime
+from flask import Flask, jsonify
+from flask_cors import CORS, cross_origin
+from werkzeug.routing import BaseConverter, ValidationError
+from itsdangerous import base64_encode, base64_decode
+from bson.objectid import ObjectId
+
+from model import database
 
 app = Flask(__name__)
 CORS(app)
@@ -25,7 +34,7 @@ def resource_not_found(error):
 
 
 @app.errorhandler(400)
-def invalid_parameter(error):
+def resource_not_found(error):
     return create_error_response(400, message="Invalid or missing parameters")
 
 
@@ -41,18 +50,4 @@ def hello_world():
     return jsonify({"message": "Hello World!"})
 
 
-@app.route("/devices/<device_name>", methods=["GET"])
-def get_devices(device_name):
-    Engine = database.Engine(DB_PATH)
-    Connection = Engine.connect()
-    device_db = Connection.get_device(device_name)
-    # print(device_db)
-    Connection.close()
-    if not device_db:
-        return create_error_response(404, "Device not found", "There is no a member with id %dsS" % device_name)
-    for device in device_db:
-        print(device)
-    return jsonify({"code": 200, "message": "Success", "data": device_db})
-
-    #return Response(, 200, mimetype=COLLECTIONJSON + ";" + GROUP_PROFILE)
-
+import controllers.api_controller
