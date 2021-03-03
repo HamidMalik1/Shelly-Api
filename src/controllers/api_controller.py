@@ -1,7 +1,9 @@
-from flask import Flask, jsonify, Response
+from flask import Flask, Response
+from flask_jsonpify import jsonify
+
 from flask_cors import CORS
-import json
-from controllers import bad_request_response, app
+
+from controllers import bad_request_response, create_error_response, app
 from model import database
 
 DB_PATH = 'model/mydb.db'
@@ -14,9 +16,10 @@ def get_devices(device_name):
     # print(device_db)
     Connection.close()
     if not device_db:
-        return create_error_response(404, "Device not found", "There is no a member with id %dsS" % device_name)
+        return create_error_response(404, "Device not found", "There is no a member with id " + device_name)
     for device in device_db:
         print(device)
+
     return jsonify({"code": 200, "message": "Success", "data": device_db})
 
     #return Response(, 200, mimetype=COLLECTIONJSON + ";" + GROUP_PROFILE)
